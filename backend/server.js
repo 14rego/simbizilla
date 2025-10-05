@@ -1,13 +1,32 @@
 import express from "express";
 import cors from "cors";
-import names from "./routes/names.js";
+
+//import corporations from "./routes/corporations.js";
+//import names from "./routes/names.js";
+import users from "./routes/users.js";
 
 const PORT = process.env.MONGOPORT || 5050;
 const app = express();
 
-app.use(cors());
+const allowedOrigins = ["http://localhost:5173", `http://localhost:${PORT}`];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/name", names);
+
+//app.use("/api/names", names);
+app.use("/api/users", users);
+//app.use("/api/corporations", corporations);
 
 // start the Express server
 app.listen(PORT, () => {
