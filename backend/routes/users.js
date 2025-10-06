@@ -1,57 +1,42 @@
 import express from "express";
 import mongooseConn from "../db/mongoose.js";
-import mongoose from "mongoose";
 import _ from "lodash";
-import { Corporation, defaultCorporation } from "./corporations.js";
+import { User, initUser } from "../models/user.js"
+import { Corporation, initCorporation } from "../models/corporation.js"
 
 const router = express.Router();
-
-const user = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    nickname: {
-        type: String,
-        required: true
-    },
-    adminApproved: Boolean,
-    deletedOn: { 
-        type: Date, 
-        default: null
-    }
-});
-
-export const defaultUser = {
-    email: "",
-    nickname: "",
-    adminApproved: true, // TODO: make admin approval later
-    deletedOn: null
-};
-
-const User = mongoose.model("user", user);
 
 // CREATE / POST ONE
 router.post("/signup", async (req, res) => {
     // TODO: sanitize, yo
     mongooseConn().then(async () => {
-        await User.create({
-            ...defaultUser,
+        const response = {
+            user: null,
+            corp: null
+        };
+        const newUser = await User.create({
+            ...initUser,
             email: req.body.email.trim().toString(),
             nickname: req.body.nickname.trim().toString(),
             adminApproved: true, // TODO: don't auto-approve
-        }).then(async (newUser) => {
-            const newCorp = await Corporation.create({
-                ...defaultCorporation,
-                title: req.body.corporation.toString().trim(),
-                userId: newUser._id
-            });
-            res.send({
-                user: newUser,
-                corporation: newCorp
-            }).status(200);
         });
+        console.log(newUser);
+        if (newUser) {
+            response.user = Object.assign(newUser);
+            const newCorp = await Corporation.create({
+                ...initCorporation,
+                title: req.body.corporation.toString().trim(),
+                userId: user._id
+            });
+            console.log(newCorp);
+            if (newCorp) {
+                response.corporation = Object.assign(newCorp);
+                await User.findByIdAndUpdate(newUser._id, {
+                    $push: { corporations: newCorp._id }
+                });
+            }
+        }
+        res.send(response).status(!response.user || !response.corporation ? 204 : 200);
     }).catch((err) => {
         console.error(err);
         res.status(500).send("Error adding user");
@@ -62,30 +47,30 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
     // TODO: sanitize, yo
     mongooseConn().then(async () => {
-        let status = 200;
-        const user = await User.findOne({
+        const response = {
+            user: null,
+            corporation: null
+        };
+        const gotUser = await User.findOne({
             email: req.body.email.trim().toString(),
             adminApproved: true,
-        });
-        console.log(user);
-        if (user) {
-            const corp = await Corporation.findOne({
+        }).populate("corporations");
+        console.log(gotUser);
+        if (gotUser) {
+            response.user = Object.assign(gotUser);
+            const gotCorp = await Corporation.findOne({
                 title: req.body.corporation.toString().trim(),
-                userId: user._id
+                userId: gotUser._id
             });
-            console.log(corp);
-            if (corp) {
-                res.send({
-                    user: user,
-                    corporation: corp
-                }).status(200);
+            console.log(gotCorp);
+            if (gotCorp) {
+                response.corporation = Object.assign(gotCorp);
+                await User.findByIdAndUpdate(gotUser._id, {
+                    $addToSet: { corporations: gotCorp._id }
+                });
             }
-        } else {
-            res.send({
-                user: user,
-                corporation: null
-            }).status(204);
         }
+        res.send(response).status(!response.user || !response.corporation ? 204 : 200);
     }).catch((err) => {
         console.error(err);
         res.status(500).send("Error finding sign in info");

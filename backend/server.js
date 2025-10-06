@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-//import corporations from "./routes/corporations.js";
+import corporations from "./routes/corporations.js";
 //import names from "./routes/names.js";
 import users from "./routes/users.js";
 
@@ -24,9 +24,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.use("/api/corporations", corporations);
 //app.use("/api/names", names);
 app.use("/api/users", users);
-//app.use("/api/corporations", corporations);
 
 // start the Express server
 app.listen(PORT, () => {

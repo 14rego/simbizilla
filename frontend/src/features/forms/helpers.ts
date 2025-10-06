@@ -4,6 +4,19 @@ export const handleBlur = (target: HTMLInputElement) => {
     target.reportValidity();
 };
 
+export const apiGet = async (path: string) => {
+  return fetch(`${apiURL}${path}`, {
+      method: "GET",
+    })
+    .then(resp => {
+      if (!resp.ok) {
+        console.error(resp);
+        throw new Error(`Error! Status: ${resp.status}`);
+      }
+      return resp.json();
+    });
+};
+
 export const apiPost = async (path: string, body: object) => {
   return fetch(`${apiURL}${path}`, {
       method: "POST",
@@ -18,5 +31,5 @@ export const apiPost = async (path: string, body: object) => {
         throw new Error(`Error! Status: ${resp.status}`);
       }
       return resp.json();
-    })
-}
+    });
+};

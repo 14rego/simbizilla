@@ -31,7 +31,7 @@ export const sliceUI = createSlice({
       },
     },
     extraReducers: (builder) => {
-      builder.addCase("user/setUser", (state) => {
+      builder.addCase("user/unsetUser", (state) => {
         state.isAuthorized = false;
         return state;
       });

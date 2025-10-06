@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Corporation } from "./corporation";
 
 export interface User {
     _id: string,
@@ -6,7 +7,7 @@ export interface User {
     nickname: string,
     adminApproved: boolean,
     deletedOn?: Date | null,
-    corporationIds?: string[]
+    corporations?: Corporation[]
 };
 
 export const initUser: User = {
@@ -28,7 +29,7 @@ export const sliceUser = createSlice({
         return state;
       },
       unsetUser: (state) => {
-        state = initUser;
+        state = Object.assign(initUser);
         sessionStorage.removeItem(ssKeyUser);
         return state;
       },

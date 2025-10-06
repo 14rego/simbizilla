@@ -24,10 +24,16 @@ export const sliceCorporation = createSlice({
         else sessionStorage.removeItem(ssKeyCorp);
         return state;
       },
+      unsetCorporation: (state) => {
+        state = Object.assign(initCorporation);
+        sessionStorage.removeItem(ssKeyCorp);
+        return state;
+      },
     },
     extraReducers: (builder) => {
-      builder.addCase("user/setUser", (state) => {
-        state = initCorporation;
+      builder.addCase("user/unsetUser", (state) => {
+        state = Object.assign(initCorporation);
+        sessionStorage.removeItem(ssKeyCorp);
         return state;
       });
     }

@@ -30,7 +30,6 @@ export const sliceForm = createSlice({
     initialState: initForms,
     reducers: {
       setFormMessages: (state, action: PayloadAction<FormMessage[]>) => {
-        console.log(action);
         state.messages = Object.assign(action.payload);
         return state;
       },

@@ -1,24 +1,18 @@
-import { useEffect, useState, type JSX, type SyntheticEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, type JSX, type SyntheticEvent } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost, handleBlur } from "../../features/forms/helpers";
-import { initSignX, type SignX } from "../../store/slices/forms";
+import { initSignX, setFormMessages, type SignX } from "../../store/slices/forms";
 import { setUser } from "../../store/slices/user";
 import { setCorporation } from "../../store/slices/corporation";
 import _ from "lodash";
-import type { RootState } from "../../store/index";
 import FormMessages from "../../features/forms/FormMessages";
+import { setIsAuthorized } from "../../store/slices/ui";
 
 const SignIn = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user);
-  const corp = useSelector((state: RootState) => state.corporation);
   const [form, setForm] = useState(_.cloneDeep(initSignX));
-
-  useEffect(() => {
-    if (user._id != "" && corp._id != "") navigate("/");
-  }, [corp._id, dispatch, navigate, user._id]);
 
   const updateForm = (value: object) => {
     return setForm((prev: SignX) => {
@@ -31,12 +25,19 @@ const SignIn = (): JSX.Element => {
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
       apiPost("users/signin", form).then((data) => {
-          console.log(data);
-          if (data.user) {
-            dispatch(setUser(data.user));
-            if (data.corporation) dispatch(setCorporation(_.cloneDeep(data.corporation)));
-          }
-          if (data.user && data.corporation) navigate("/");
+        if (data.user) {
+          dispatch(setUser(data.user));
+          if (data.corporation) dispatch(setCorporation(data.corporation));
+        }
+        if (data.user && data.corporation) {
+          dispatch(setIsAuthorized(true));
+          navigate("/");
+        } else {
+          dispatch(setFormMessages([{
+            message: "This Email and Corporation name combination seems to be invalid.",
+            type: "ERROR"
+          }]));
+        }
       });
     }
   }
