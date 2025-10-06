@@ -1,12 +1,13 @@
 import { useEffect, useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiPost, handleBlur } from "../../features/forms/helpers";
 import { initSignX, type SignX } from "../../store/slices/forms";
 import { setUser } from "../../store/slices/user";
 import { setCorporation } from "../../store/slices/corporation";
 import _ from "lodash";
 import type { RootState } from "../../store/index";
+import FormMessages from "../../features/forms/FormMessages";
 
 const SignIn = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -31,8 +32,10 @@ const SignIn = (): JSX.Element => {
     if (e.currentTarget.checkValidity()) {
       apiPost("users/signin", form).then((data) => {
           console.log(data);
-          if (data.user) dispatch(setUser(data.user));
-          if (data.corporation) dispatch(setCorporation(_.cloneDeep(data.corporation)));
+          if (data.user) {
+            dispatch(setUser(data.user));
+            if (data.corporation) dispatch(setCorporation(_.cloneDeep(data.corporation)));
+          }
           if (data.user && data.corporation) navigate("/");
       });
     }
@@ -56,8 +59,11 @@ const SignIn = (): JSX.Element => {
               onChange={(e) => updateForm({ corporation: e.target.value })} />
           </div>
         </fieldset>
-        <ul aria-live="assertive"></ul>
-        <button type="submit" className="btn mt-2">Let&rsquo;s GO</button>
+        <FormMessages />
+        <div className="flex justify-between items-start mt-2">
+          <button type="submit" className="btn">Let&rsquo;s GO</button>
+          <Link to="/sign/up" className="btn secondary text-xs">or Sign Up</Link>
+        </div>
       </form>
     </main>
   )

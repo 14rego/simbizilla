@@ -16,18 +16,25 @@ export const initUser: User = {
     adminApproved: true, // TODO: approval process
 };
 
+export const ssKeyUser = "sbzUser";
+
 export const sliceUser = createSlice({
     name: "user",
     initialState: initUser,
     reducers: {
       setUser: (state, action: PayloadAction<User>) => {
-        console.log(action);
         state = action.payload;
+        sessionStorage.setItem(ssKeyUser, state.email);
+        return state;
+      },
+      unsetUser: (state) => {
+        state = initUser;
+        sessionStorage.removeItem(ssKeyUser);
         return state;
       },
     }
 });
 
-export const { setUser } = sliceUser.actions;
+export const { setUser, unsetUser } = sliceUser.actions;
 
 export default sliceUser.reducer;

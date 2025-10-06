@@ -1,4 +1,9 @@
-import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import type { RootState } from "../../store";
+import { setIsBurgerVisible } from "../../store/slices/ui";
+import { Menu } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 interface BreadcrumbItem {
     title: string,
@@ -7,27 +12,48 @@ interface BreadcrumbItem {
 
 export default function Header() {
     const location = useLocation();
+    const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user);
+    const ui = useSelector((state: RootState) => state.ui);
 
-    let docTitle = "Simbizilla | ";
-    let title = "Simbizilla";
-
-    const dashboard: BreadcrumbItem = {
-            title: "Dashboard",
-            path: "/"
+    const burger = () => {
+        if (ui.isAuthorized) return (
+            <div className="inline-block relative mr-3">
+                <button type="button" className="btn" onClick={() => dispatch(setIsBurgerVisible(!ui.isBurgerVisible))} aria-controls="burger" aria-label="Toggle Main Navigation Visibility" aria-selected={ui.isBurgerVisible}>
+                    <Menu className="w-3 h-3" />
+                </button>
+                <nav id="burger" className={ui.isBurgerVisible ? 'absolute block shadow-md border rounded-lg mt-0.5 p-2 border-gray-200 bg-white dark:bg-purple-900' : 'sr-only'} aria-hidden={!ui.isBurgerVisible} aria-label="Main Navigation">
+                    <ul>
+                        <li><Link to="/" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">{user.nickname}&rsquo;s Dashboard</Link></li>
+                        <li><Link to="/sign/out" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Sign Out</Link></li>
+                    </ul>
+                </nav>
+            </div>
+        );
+        else if (location.pathname != "/sign/in") return (
+            <Link to="/sign/in" className="btn inline-block text-xs mr-3">Sign In</Link>
+        );
+        else return ``;
     };
-    const breadcrumbs: [BreadcrumbItem] = [dashboard];
 
-    if (location.pathname.indexOf("user") > -1) {
-        title = "Users";
-        docTitle += "Users";
+    // BREADCRUMBS
+    const breadcrumbs: BreadcrumbItem[] = useMemo(() => {
+        return [
+            {
+                title: "Dashboard",
+                path: "/"
+            }
+        ];
+    }, []);
 
-        breadcrumbs.push({
-            title: "Users",
-            path: "/users/"
-        });
-    }
-
-    document.title = docTitle;
+    useEffect(() => {
+        if (location.pathname.indexOf("user") > -1) {
+            breadcrumbs.push({
+                title: "Users",
+                path: "/users/"
+            });
+        }
+    }, [breadcrumbs, location.pathname]);
 
     const breadcrumbItems = breadcrumbs.map((item) => {
         if (item.path != location.pathname) return (
@@ -47,7 +73,8 @@ export default function Header() {
 
     return (
         <header>
-            <h1 className="uppercase">{title}</h1>
+            {burger()}
+            <h1 className="uppercase">{ui.pageTitle}</h1>
             {breadcrumbNav()}
         </header>
     );

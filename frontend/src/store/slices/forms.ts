@@ -29,14 +29,18 @@ export const sliceForm = createSlice({
     name: "forms",
     initialState: initForms,
     reducers: {
-      setFormMessages: (state, action: PayloadAction<Forms>) => {
+      setFormMessages: (state, action: PayloadAction<FormMessage[]>) => {
         console.log(action);
-        state.messages = Object.assign(action.payload.messages);
+        state.messages = Object.assign(action.payload);
+        return state;
+      },
+      unsetFormMessages: (state) => {
+        state.messages = Object.assign(initForms.messages);
         return state;
       },
     }
 });
 
-export const { setFormMessages } = sliceForm.actions;
+export const { setFormMessages, unsetFormMessages } = sliceForm.actions;
 
 export default sliceForm.reducer;

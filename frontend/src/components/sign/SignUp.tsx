@@ -1,11 +1,12 @@
 import { useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiPost, handleBlur } from "../../features/forms/helpers";
-import { initSignX, type SignX } from "../../store/slices/forms";
-import { setUser } from "../../store/slices/user";
+import { initSignX, setFormMessages, type SignX } from "../../store/slices/forms";
+import { setUser, unsetUser } from "../../store/slices/user";
 import { setCorporation } from "../../store/slices/corporation";
 import _ from "lodash";
+import FormMessages from "../../features/forms/FormMessages";
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -23,11 +24,20 @@ const SignUp = (): JSX.Element => {
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
       apiPost("users/signup", form).then((data) => {
-          console.log(data);
-          if (data.user) dispatch(setUser(data.user));
-          if (data.corporation) dispatch(setCorporation(_.cloneDeep(data.corporation)));
-          //setForm(_.cloneDeep(initSignX));
-          navigate("/sign/in");
+          if (data.user) {
+            dispatch(setUser(data.user));
+            if (data.corporation) {
+              dispatch(setCorporation(data.corporation));
+              navigate("/");
+            } else {
+              dispatch(setFormMessages([{
+                message: "Please choose another corporation name.",
+                type: "ERROR"
+              }]));
+            }
+          } else {
+            dispatch(unsetUser());
+          }
       });
     }
   }
@@ -58,8 +68,11 @@ const SignUp = (): JSX.Element => {
             <p className="form-helper">Remember it, you&rsquo;ll need it each time you play.</p>
           </div>
         </fieldset>
-        <ul aria-live="assertive"></ul>
-        <button type="submit" className="btn mt-2">Let&rsquo;s GO</button>
+        <FormMessages />
+        <div className="flex justify-between items-start mt-2">
+          <button type="submit" className="btn">Let&rsquo;s GO</button>
+          <Link to="/sign/in" className="btn secondary text-xs">or Sign In</Link>
+        </div>
       </form>
     </main>
   )

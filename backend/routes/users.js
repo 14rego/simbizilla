@@ -80,11 +80,12 @@ router.post("/signin", async (req, res) => {
                     corporation: corp
                 }).status(200);
             }
+        } else {
+            res.send({
+                user: user,
+                corporation: null
+            }).status(204);
         }
-        res.send({
-            user: user,
-            corporation: null
-        }).status(204);
     }).catch((err) => {
         console.error(err);
         res.status(500).send("Error finding sign in info");

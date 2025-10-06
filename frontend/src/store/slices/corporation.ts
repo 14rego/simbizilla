@@ -12,15 +12,24 @@ export const initCorporation: Corporation = {
     userId: ""
 };
 
+export const ssKeyCorp = "sbzCorp";
+
 export const sliceCorporation = createSlice({
     name: "corporation",
     initialState: initCorporation,
     reducers: {
       setCorporation: (state, action: PayloadAction<Corporation>) => {
-        console.log(action);
         state = action.payload;
+        if (state.title != "") sessionStorage.setItem(ssKeyCorp, state.title);
+        else sessionStorage.removeItem(ssKeyCorp);
         return state;
       },
+    },
+    extraReducers: (builder) => {
+      builder.addCase("user/setUser", (state) => {
+        state = initCorporation;
+        return state;
+      });
     }
 });
 

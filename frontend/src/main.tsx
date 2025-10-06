@@ -10,15 +10,19 @@ import App from "./App.tsx";
 import { store } from "./store";
 import SignIn from "./components/sign/SignIn.tsx";
 import SignUp from "./components/sign/SignUp.tsx";
+import Dashboard from "./components/account/Dashboard.tsx";
+import SignOut from "./components/sign/SignOut.tsx";
+import ErrorPage from "./components/layout/Error.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
-        element: <SignUp />,
+        element: <Dashboard />,
       },
       {
         path: "/sign/up",
@@ -27,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/sign/in",
         element: <SignIn />,
+      },
+      {
+        path: "/sign/out",
+        element: <SignOut />,
+      },
+      {
+        path: "/error",
+        element: <ErrorPage />,
       },
     ],
   },

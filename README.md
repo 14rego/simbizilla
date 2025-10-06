@@ -8,9 +8,9 @@ Become the CEO of a start-up commercial corporation and get as rich as possible 
 
 ## backend
 
-  * MongoDB Atlas
-  * Mongoose schema
-  * Express routing
+-   MongoDB Atlas
+-   Mongoose schema
+-   Express routing
 
 ### config.env
 
@@ -27,11 +27,11 @@ MONGODBNAME
 
 ## frontend
 
-  * React
-  * Vite
-  * Typescript
-  * Maybe Redux (just for practice, not because it's necessary)
-  * Tailwind
+-   React
+-   Vite
+-   Typescript
+-   Redux (just for practice, it's overkill)
+-   Tailwind
 
 ### run
 
