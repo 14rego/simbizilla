@@ -24,7 +24,7 @@ const SignIn = (): JSX.Element => {
     // TODO: SANITIZE
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
-      apiPost("users/signin", form).then((data) => {
+      apiPost("accounts/signin", form).then((data) => {
         if (data.user) {
           dispatch(setUser(data.user));
           if (data.corporation) dispatch(setCorporation(data.corporation));

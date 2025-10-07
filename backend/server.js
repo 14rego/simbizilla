@@ -3,7 +3,7 @@ import cors from "cors";
 
 import corporations from "./routes/corporations.js";
 //import names from "./routes/names.js";
-import users from "./routes/users.js";
+import accounts from "./routes/accounts.js";
 
 const PORT = process.env.MONGOPORT || 5050;
 const app = express();
@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use("/api/corporations", corporations);
 //app.use("/api/names", names);
-app.use("/api/users", users);
+app.use("/api/accounts", accounts);
 
 // start the Express server
 app.listen(PORT, () => {

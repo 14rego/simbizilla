@@ -26,7 +26,7 @@ export const useCurrentSignX = (): SignX => {
             const userFromSS = sessionStorage.getItem(ssKeyUser) || user._id;
             const corpFromSS = sessionStorage.getItem(ssKeyCorp) || corp._id;
             if (userFromSS != "" && corpFromSS != "") {
-                apiPost("users/signin", {
+                apiPost("accounts/signin", {
                     email: userFromSS,
                     corporation: corpFromSS
                 }).then((data) => {

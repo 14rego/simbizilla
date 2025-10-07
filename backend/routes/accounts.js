@@ -1,14 +1,14 @@
 import express from "express";
 import mongooseConn from "../db/mongoose.js";
 import _ from "lodash";
-import { User, initUser } from "../models/user.js"
-import { Corporation, initCorporation } from "../models/corporation.js"
+import { User, initUser } from "../models/user.js";
+import { Corporation, initCorporation } from "../models/corporation.js";
+import sanitize from "mongo-sanitize";
 
 const router = express.Router();
 
 // CREATE / POST ONE
 router.post("/signup", async (req, res) => {
-    // TODO: sanitize, yo
     mongooseConn().then(async () => {
         const response = {
             user: null,
@@ -16,8 +16,8 @@ router.post("/signup", async (req, res) => {
         };
         const newUser = await User.create({
             ...initUser,
-            email: req.body.email.trim().toString(),
-            nickname: req.body.nickname.trim().toString(),
+            email: sanitize(req.body.email),
+            nickname: sanitize(req.body.nickname),
             adminApproved: true, // TODO: don't auto-approve
         });
         console.log(newUser);
@@ -25,7 +25,7 @@ router.post("/signup", async (req, res) => {
             response.user = Object.assign(newUser);
             const newCorp = await Corporation.create({
                 ...initCorporation,
-                title: req.body.corporation.toString().trim(),
+                title: sanitize(req.body.corporation),
                 userId: user._id
             });
             console.log(newCorp);
@@ -45,21 +45,20 @@ router.post("/signup", async (req, res) => {
 
 // READ / GET ONE
 router.post("/signin", async (req, res) => {
-    // TODO: sanitize, yo
     mongooseConn().then(async () => {
         const response = {
             user: null,
             corporation: null
         };
         const gotUser = await User.findOne({
-            email: req.body.email.trim().toString(),
+            email: sanitize(req.body.email),
             adminApproved: true,
         }).populate("corporations");
         console.log(gotUser);
         if (gotUser) {
             response.user = Object.assign(gotUser);
             const gotCorp = await Corporation.findOne({
-                title: req.body.corporation.toString().trim(),
+                title: sanitize(req.body.corporation),
                 userId: gotUser._id
             });
             console.log(gotCorp);

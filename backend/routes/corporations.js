@@ -1,18 +1,16 @@
 import express from "express";
 import mongooseConn from "../db/mongoose.js";
-import { User } from "../models/user.js"
-import { Corporation } from "../models/corporation.js"
+import { User } from "../models/user.js";
+import { Corporation } from "../models/corporation.js";
+import sanitize from "mongo-sanitize";
 
 const router = express.Router();
 
 // READ / ALL CORPS BY USER EMAIL
-router.get("/:email", async (req, res) => {
-    // TODO: sanitize, yo
+router.get("/:id", async (req, res) => {
     mongooseConn().then(async () => {
         let response = [];
-        const gotUser = await User.findOne({
-            email: req.params.email.trim().toString(),
-        });
+        const gotUser = await User.findById(sanitize(req.params.id));
         console.log(gotUser);
         if (gotUser) {
             const gotCorps = await Corporation.find({

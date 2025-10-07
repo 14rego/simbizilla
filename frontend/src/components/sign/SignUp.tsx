@@ -23,7 +23,7 @@ const SignUp = (): JSX.Element => {
     // TODO: ADD UNIQUENESS VALIDATION AND SANITIZE
     e.preventDefault();
     if (e.currentTarget.checkValidity()) {
-      apiPost("users/signup", form).then((data) => {
+      apiPost("accounts/signup", form).then((data) => {
           if (data.user) {
             dispatch(setUser(data.user));
             if (data.corporation) {
