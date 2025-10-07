@@ -49,20 +49,20 @@ const SignUp = (): JSX.Element => {
           <legend>Set Up Your Profile</legend>
           <div className="form-control-stack mb-2">
             <label htmlFor="email">Email</label>
-            <input id="email" type="email" value={form.email} required 
+            <input id="email" type="email" value={form.email} required
               onBlur={(e) => handleBlur(e.target)}
               onChange={(e) => updateForm({ email: e.target.value })} />
           </div>
           <div className="form-control-stack my-2">
             <label htmlFor="nickname">What should we call you?</label>
-            <input id="nickname" type="text" value={form.nickname} required 
+            <input id="nickname" type="text" value={form.nickname} required maxLength={25} 
               onBlur={(e) => handleBlur(e.target)}
               onChange={(e) => updateForm({ nickname: e.target.value })} />
             <p className="form-helper">We&rsquo;ll be respectful (once you&rsquo;re rich).</p>
           </div>
           <div className="form-control-stack my-2">
             <label htmlFor="corporation">First Corporation Name</label>
-            <input id="corporation" type="text" value={form.corporation} required 
+            <input id="corporation" type="text" value={form.corporation} required maxLength={25} 
               onBlur={(e) => handleBlur(e.target)}
               onChange={(e) => updateForm({ corporation: e.target.value })} />
             <p className="form-helper">Remember it, you&rsquo;ll need it each time you play.</p>

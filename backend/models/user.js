@@ -3,11 +3,16 @@ import mongoose from "mongoose";
 export const schemaUser = new mongoose.Schema({
     email: {
         type: String,
+        maxLength: 40,
         required: true,
-        unique: true
+        trim: true,
+        unique: true,
+        index: true
     },
     nickname: {
         type: String,
+        maxLength: 25,
+        trim: true,
         required: true
     },
     adminApproved: Boolean,

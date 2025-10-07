@@ -8,8 +8,11 @@ export const schemaCorporation = new mongoose.Schema({
     },
     title: {
         type: String,
+        maxLength: 25,
+        trim: true,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
     deletedOn: { 
         type: Date, 
