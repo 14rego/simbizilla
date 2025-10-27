@@ -1,12 +1,12 @@
 import { useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { apiPost, handleBlur } from "../../features/forms/helpers";
-import { initSignX, setFormMessages, type SignX } from "../../store/slices/forms";
+import { apiPost, handleBlur } from "../../features/form/helpers";
+import { initSignX, setFormMessages, type SignX } from "../../store/slices/ui";
 import { setUser, unsetUser } from "../../store/slices/user";
-import { setCorporation } from "../../store/slices/corporation";
+import { setOrganization } from "../../store/slices/organization";
 import _ from "lodash";
-import FormMessages from "../../features/forms/FormMessages";
+import FormMessages from "../../features/form/FormMessages";
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -26,12 +26,12 @@ const SignUp = (): JSX.Element => {
       apiPost("accounts/signup", form).then((data) => {
           if (data.user) {
             dispatch(setUser(data.user));
-            if (data.corporation) {
-              dispatch(setCorporation(data.corporation));
+            if (data.organization) {
+              dispatch(setOrganization(data.organization));
               navigate("/");
             } else {
               dispatch(setFormMessages([{
-                message: "Please choose another corporation name.",
+                message: "Please choose another organization name.",
                 type: "ERROR"
               }]));
             }
@@ -54,17 +54,17 @@ const SignUp = (): JSX.Element => {
               onChange={(e) => updateForm({ email: e.target.value })} />
           </div>
           <div className="form-control-stack my-2">
-            <label htmlFor="nickname">What should we call you?</label>
-            <input id="nickname" type="text" value={form.nickname} required maxLength={25} 
+            <label htmlFor="title">What should we call you?</label>
+            <input id="title" type="text" value={form.title} required maxLength={25} 
               onBlur={(e) => handleBlur(e.target)}
-              onChange={(e) => updateForm({ nickname: e.target.value })} />
+              onChange={(e) => updateForm({ title: e.target.value })} />
             <p className="form-helper">We&rsquo;ll be respectful (once you&rsquo;re rich).</p>
           </div>
           <div className="form-control-stack my-2">
-            <label htmlFor="corporation">First Corporation Name</label>
-            <input id="corporation" type="text" value={form.corporation} required maxLength={25} 
+            <label htmlFor="organization">First Organization Name</label>
+            <input id="organization" type="text" value={form.organization} required maxLength={25} 
               onBlur={(e) => handleBlur(e.target)}
-              onChange={(e) => updateForm({ corporation: e.target.value })} />
+              onChange={(e) => updateForm({ organization: e.target.value })} />
             <p className="form-helper">Remember it, you&rsquo;ll need it each time you play.</p>
           </div>
         </fieldset>

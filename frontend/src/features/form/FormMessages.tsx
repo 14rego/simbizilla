@@ -1,10 +1,10 @@
 import { type JSX } from "react";
-import type { FormMessage } from "../../store/slices/forms";
+import type { FormMessage } from "../../store/slices/ui";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 
 const FormMessages = (): JSX.Element => {
-  const formMsgs = useSelector((state: RootState) => state.forms.messages);    
+  const formMsgs = useSelector((state: RootState) => state.ui.formMessages);    
 
   return (<ul aria-live="assertive" className="list-disc ml-5 my-1">{formMsgs.map((m: FormMessage) => {
     switch (m.type.toLowerCase()) {

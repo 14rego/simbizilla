@@ -1,20 +1,30 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Corporation } from "./corporation";
+import type { Category } from "../models/category";
+import type { Event } from "../models/event";
+import type { Organization } from "./organization";
 
 export interface User {
     _id: string,
     email: string,
-    nickname: string,
-    adminApproved: boolean,
-    deletedOn?: Date | null,
-    corporations?: Corporation[]
+    title: string,
+    organizations?: Organization[]
+    categories?: Category[]
+    events?: Event[],
+    balance: number,
+    level: number,
+    deletedAt?: Date | null,
 };
 
 export const initUser: User = {
     _id: "",
     email: "",
-    nickname: "",
-    adminApproved: true, // TODO: approval process
+    title: "",
+    organizations: [],
+    categories: [],
+    events: [],
+    balance: 0,
+    level: 1,
+    deletedAt: null
 };
 
 export const ssKeyUser = "sbzUser";

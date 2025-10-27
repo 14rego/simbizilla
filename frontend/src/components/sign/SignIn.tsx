@@ -1,13 +1,12 @@
 import { useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { apiPost, handleBlur } from "../../features/forms/helpers";
-import { initSignX, setFormMessages, type SignX } from "../../store/slices/forms";
+import { apiPost, handleBlur } from "../../features/form/helpers";
 import { setUser } from "../../store/slices/user";
-import { setCorporation } from "../../store/slices/corporation";
+import { setOrganization } from "../../store/slices/organization";
 import _ from "lodash";
-import FormMessages from "../../features/forms/FormMessages";
-import { setIsAuthorized } from "../../store/slices/ui";
+import FormMessages from "../../features/form/FormMessages";
+import { setIsAuthorized, initSignX, setFormMessages, type SignX } from "../../store/slices/ui";
 
 const SignIn = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -27,14 +26,14 @@ const SignIn = (): JSX.Element => {
       apiPost("accounts/signin", form).then((data) => {
         if (data.user) {
           dispatch(setUser(data.user));
-          if (data.corporation) dispatch(setCorporation(data.corporation));
+          if (data.organization) dispatch(setOrganization(data.organization));
         }
-        if (data.user && data.corporation) {
+        if (data.user && data.organization) {
           dispatch(setIsAuthorized(true));
           navigate("/");
         } else {
           dispatch(setFormMessages([{
-            message: "This Email and Corporation name combination seems to be invalid.",
+            message: "This Email and Organization name combination seems to be invalid.",
             type: "ERROR"
           }]));
         }
@@ -54,10 +53,10 @@ const SignIn = (): JSX.Element => {
               onChange={(e) => updateForm({ email: e.target.value })} />
           </div>
           <div className="form-control-stack my-2">
-            <label htmlFor="corporation">Which Corporation</label>
-            <input id="corporation" type="text" value={form.corporation} required 
+            <label htmlFor="organization">Which Organization</label>
+            <input id="organization" type="text" value={form.organization} required 
               onBlur={(e) => handleBlur(e.target)}
-              onChange={(e) => updateForm({ corporation: e.target.value })} />
+              onChange={(e) => updateForm({ organization: e.target.value })} />
           </div>
         </fieldset>
         <FormMessages />

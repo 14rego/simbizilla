@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export interface Corporation {
+export interface Organization {
     _id: string,
     title: string,
     userId: string
 };
 
-export const initCorporation: Corporation = {
+export const initOrganization: Organization = {
     _id: "",
     title: "",
     userId: ""
@@ -14,31 +14,31 @@ export const initCorporation: Corporation = {
 
 export const ssKeyCorp = "sbzCorp";
 
-export const sliceCorporation = createSlice({
-    name: "corporation",
-    initialState: initCorporation,
+export const sliceOrganization = createSlice({
+    name: "organization",
+    initialState: initOrganization,
     reducers: {
-      setCorporation: (state, action: PayloadAction<Corporation>) => {
+      setOrganization: (state, action: PayloadAction<Organization>) => {
         state = action.payload;
         if (state.title != "") sessionStorage.setItem(ssKeyCorp, state.title);
         else sessionStorage.removeItem(ssKeyCorp);
         return state;
       },
-      unsetCorporation: (state) => {
-        state = Object.assign(initCorporation);
+      unsetOrganization: (state) => {
+        state = Object.assign(initOrganization);
         sessionStorage.removeItem(ssKeyCorp);
         return state;
       },
     },
     extraReducers: (builder) => {
       builder.addCase("user/unsetUser", (state) => {
-        state = Object.assign(initCorporation);
+        state = Object.assign(initOrganization);
         sessionStorage.removeItem(ssKeyCorp);
         return state;
       });
     }
 });
 
-export const { setCorporation } = sliceCorporation.actions;
+export const { setOrganization } = sliceOrganization.actions;
 
-export default sliceCorporation.reducer;
+export default sliceOrganization.reducer;

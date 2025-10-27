@@ -1,8 +1,9 @@
 import express from "express";
 import mongooseConn from "../db/mongoose.js";
 import _ from "lodash";
+import { Category } from "../models/category.js";
 import { User, initUser } from "../models/user.js";
-import { Corporation, initCorporation } from "../models/corporation.js";
+import { Organization, initOrganization } from "../models/organization.js";
 import sanitize from "mongo-sanitize";
 
 const router = express.Router();
@@ -12,31 +13,35 @@ router.post("/signup", async (req, res) => {
     mongooseConn().then(async () => {
         const response = {
             user: null,
-            corp: null
+            organization: null
         };
+        const role = await Category.findOne({
+            type: "User",
+            title: "Player", // TODO: start with "Waiting"
+        });
         const newUser = await User.create({
             ...initUser,
             email: sanitize(req.body.email),
-            nickname: sanitize(req.body.nickname),
-            adminApproved: true, // TODO: don't auto-approve
+            title: sanitize(req.body.title),
+            categories: [ role.id ]
         });
         console.log(newUser);
+        response.user = Object.assign(newUser);
         if (newUser) {
-            response.user = Object.assign(newUser);
-            const newCorp = await Corporation.create({
-                ...initCorporation,
-                title: sanitize(req.body.corporation),
-                userId: user._id
+            const newCorp = await Organization.create({
+                ...initOrganization,
+                userId: newUser._id,
+                title: sanitize(req.body.organization),
             });
             console.log(newCorp);
             if (newCorp) {
-                response.corporation = Object.assign(newCorp);
-                await User.findByIdAndUpdate(newUser._id, {
-                    $push: { corporations: newCorp._id }
-                });
+                newUser.organizations.push(newCorp._id);
+                await newUser.save();
+                response.user = Object.assign(newUser);
+                response.organization = Object.assign(newCorp);
             }
         }
-        res.send(response).status(!response.user || !response.corporation ? 204 : 200);
+        res.send(response).status(!response.user || !response.organization ? 204 : 200);
     }).catch((err) => {
         console.error(err);
         res.status(500).send("Error adding user");
@@ -48,28 +53,24 @@ router.post("/signin", async (req, res) => {
     mongooseConn().then(async () => {
         const response = {
             user: null,
-            corporation: null
+            organization: null
         };
+        const role = await Category.findOne({ type: "User", title: "Player" });
         const gotUser = await User.findOne({
             email: sanitize(req.body.email),
-            adminApproved: true,
-        }).populate("corporations");
-        console.log(gotUser);
+            categories: role._id
+        }).populate("organizations");
         if (gotUser) {
             response.user = Object.assign(gotUser);
-            const gotCorp = await Corporation.findOne({
-                title: sanitize(req.body.corporation),
+            const gotCorp = await Organization.findOne({
+                title: sanitize(req.body.organization),
                 userId: gotUser._id
             });
-            console.log(gotCorp);
             if (gotCorp) {
-                response.corporation = Object.assign(gotCorp);
-                await User.findByIdAndUpdate(gotUser._id, {
-                    $addToSet: { corporations: gotCorp._id }
-                });
+                response.organization = Object.assign(gotCorp);
             }
         }
-        res.send(response).status(!response.user || !response.corporation ? 204 : 200);
+        res.send(response).status(!response.user || !response.organization ? 204 : 200);
     }).catch((err) => {
         console.error(err);
         res.status(500).send("Error finding sign in info");

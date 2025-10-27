@@ -24,7 +24,7 @@ export default function Header() {
                 </button>
                 <nav id="burger" className={ui.isBurgerVisible ? 'absolute block shadow-md border rounded-lg mt-0.5 p-2 border-gray-200 bg-white dark:bg-purple-900' : 'sr-only'} aria-hidden={!ui.isBurgerVisible} aria-label="Main Navigation">
                     <ul>
-                        <li><Link to="/" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">{user.nickname}&rsquo;s Dashboard</Link></li>
+                        <li><Link to="/" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">{user.title}&rsquo;s Dashboard</Link></li>
                         <li><Link to="/sign/out" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Sign Out</Link></li>
                     </ul>
                 </nav>

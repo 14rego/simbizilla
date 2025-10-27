@@ -1,14 +1,12 @@
 import { combineReducers, type Reducer } from "redux";
-import { sliceUser } from "./user";
-import { sliceCorporation } from "./corporation";
-import { sliceForm } from "./forms";
+import { sliceOrganization } from "./organization";
 import { sliceUI } from "./ui";
+import { sliceUser } from "./user";
 
 const rootReducer: Reducer = combineReducers({
+    organization: sliceOrganization.reducer,
     ui: sliceUI.reducer,
-    forms: sliceForm.reducer,
     user: sliceUser.reducer,
-    corporation: sliceCorporation.reducer
 });
 
 export default rootReducer;

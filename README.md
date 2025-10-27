@@ -4,7 +4,7 @@ Simbizilla [will be] the MERN version of a game I created with my cousin many mo
 
 ## game play
 
-Become the CEO of a start-up commercial corporation and get as rich as possible (or crumble trying).
+Become the CEO of a start-up commercial organization and get as rich as possible (or crumble trying).
 
 ## backend
 

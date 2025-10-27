@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import mongoose from "mongoose";
 
 export const schemaUser = new mongoose.Schema({
@@ -9,28 +10,49 @@ export const schemaUser = new mongoose.Schema({
         unique: true,
         index: true
     },
-    nickname: {
+    title: {
         type: String,
         maxLength: 25,
         trim: true,
         required: true
     },
-    adminApproved: Boolean,
-    deletedOn: { 
-        type: Date, 
+    organizations: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization"
+    }],
+    categories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
+    }],
+    events: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event"
+    }],
+    balance: {
+        type: Number,
+        required: true
+    },
+    level: {
+        type: Number,
+        required: true
+    },
+    deletedAt: { 
+        type: Date,
         default: null
     },
-    corporations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "corporation"
-    }]
+}, {
+    timestamps: true
 });
 
 export const initUser = {
     email: "",
-    nickname: "",
-    adminApproved: true, // TODO: make admin approval later
-    deletedOn: null
+    title: "",
+    organizations: [],
+    categories: [],
+    events: [],
+    balance: 0,
+    level: 1,
+    deletedAt: null
 };
 
-export const User = mongoose.model("user", schemaUser);
+export const User = mongoose.model("User", schemaUser);

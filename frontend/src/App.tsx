@@ -3,8 +3,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setIsBurgerVisible, setPageTitle } from "./store/slices/ui";
-import { unsetFormMessages } from "./store/slices/forms";
+import { setIsBurgerVisible, setPageTitle, unsetFormMessages } from "./store/slices/ui";
 import { useCurrentSignX } from "./hooks/currentSignX";
 
 const App = () => {
@@ -29,9 +28,9 @@ const App = () => {
       "/sign/out",
       "/error"
     ].includes(location.pathname);
-    const allowed = ((currentUser.email != "" || currentUser.corporation != "") || doesntNeedCreds);
+    const allowed = ((currentUser.email != "" || currentUser.organization != "") || doesntNeedCreds);
     if (!allowed) navigate("/sign/out");
-  }, [currentUser.corporation, currentUser.email, location.pathname, navigate]);
+  }, [currentUser.organization, currentUser.email, location.pathname, navigate]);
 
   return (
     <>
