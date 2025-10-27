@@ -19,7 +19,7 @@ export default function Header() {
     const burger = () => {
         if (ui.isAuthorized) return (
             <div className="inline-block relative mr-3">
-                <button type="button" className="btn" onClick={() => dispatch(setIsBurgerVisible(!ui.isBurgerVisible))} aria-controls="burger" aria-label="Toggle Main Navigation Visibility" aria-selected={ui.isBurgerVisible}>
+                <button type="button" className="btn" id="burger" onClick={() => dispatch(setIsBurgerVisible(!ui.isBurgerVisible))} aria-controls="burger" aria-label="Toggle Main Navigation Visibility" aria-selected={ui.isBurgerVisible}>
                     <Menu className="w-3 h-3" />
                 </button>
                 <nav id="burger" className={ui.isBurgerVisible ? 'absolute block shadow-md border rounded-lg mt-0.5 p-2 border-gray-200 bg-white dark:bg-purple-900' : 'sr-only'} aria-hidden={!ui.isBurgerVisible} aria-label="Main Navigation">

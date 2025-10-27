@@ -49,6 +49,7 @@ body {
   align-items: center;
   width: 100%;
   padding: 0 1rem;
+  --break-md: 767px;
 }
 
 header,
@@ -78,6 +79,13 @@ footer {
   justify-self: flex-end;
   margin-top: auto;
   font-size: var(--text-xs);
+}
+
+main {
+    width: 100%;
+    max-width: var(--break-md);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* @layer reset */

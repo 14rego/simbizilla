@@ -1,15 +1,33 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
+import { djsFormat, djsStart } from "./ui";
 
 export interface Organization {
     _id: string,
-    title: string,
     userId: string
+    title: string,
+    facilities?: [],
+    checkbooks?: [],
+    events?: [],
+    balance: number,
+    level: number,
+    gameCurrent: string,
+    gameStart: string,
+    deletedAt?: Date | null
 };
 
 export const initOrganization: Organization = {
     _id: "",
+    userId: "",
     title: "",
-    userId: ""
+    facilities: [],
+    checkbooks: [],
+    events: [],
+    balance: 0,
+    level: 1,
+    gameCurrent: dayjs(djsStart).format(djsFormat),
+    gameStart: dayjs(djsStart).format(djsFormat),
+    deletedAt: null
 };
 
 export const ssKeyCorp = "sbzCorp";

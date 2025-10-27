@@ -45,6 +45,9 @@ export const sliceUI = createSlice({
         return state;
       },
       setIsBurgerVisible: (state, action: PayloadAction<boolean>) => {
+        if (state.isBurgerVisible == true && action.payload == false) {
+            document.getElementById("burger")?.focus();
+        }
         state.isBurgerVisible = action.payload;
         return state;
       },
