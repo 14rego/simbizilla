@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import { djsFormat, djsStart } from "./ui";
+import { djsFormat, djsStart } from "../../features/formatting/helpers";
 
 export interface Organization {
     _id: string,
@@ -8,7 +8,7 @@ export interface Organization {
     title: string,
     facilities?: [],
     checkbooks?: [],
-    events?: [],
+    incidents?: [],
     balance: number,
     level: number,
     gameCurrent: string,
@@ -22,7 +22,7 @@ export const initOrganization: Organization = {
     title: "",
     facilities: [],
     checkbooks: [],
-    events: [],
+    incidents: [],
     balance: 0,
     level: 1,
     gameCurrent: dayjs(djsStart).format(djsFormat),
@@ -30,33 +30,33 @@ export const initOrganization: Organization = {
     deletedAt: null
 };
 
-export const ssKeyCorp = "sbzCorp";
+export const ssKeyOrg = "sbzOrg";
 
-export const sliceOrganization = createSlice({
-    name: "organization",
+export const sliceGame = createSlice({
+    name: "game",
     initialState: initOrganization,
     reducers: {
-      setOrganization: (state, action: PayloadAction<Organization>) => {
+      setGame: (state, action: PayloadAction<Organization>) => {
         state = action.payload;
-        if (state.title != "") sessionStorage.setItem(ssKeyCorp, state.title);
-        else sessionStorage.removeItem(ssKeyCorp);
+        if (state.title != "") sessionStorage.setItem(ssKeyOrg, state.title);
+        else sessionStorage.removeItem(ssKeyOrg);
         return state;
       },
-      unsetOrganization: (state) => {
+      unsetGame: (state) => {
         state = Object.assign(initOrganization);
-        sessionStorage.removeItem(ssKeyCorp);
+        sessionStorage.removeItem(ssKeyOrg);
         return state;
       },
     },
     extraReducers: (builder) => {
       builder.addCase("user/unsetUser", (state) => {
         state = Object.assign(initOrganization);
-        sessionStorage.removeItem(ssKeyCorp);
+        sessionStorage.removeItem(ssKeyOrg);
         return state;
       });
     }
 });
 
-export const { setOrganization } = sliceOrganization.actions;
+export const { setGame, unsetGame } = sliceGame.actions;
 
-export default sliceOrganization.reducer;
+export default sliceGame.reducer;

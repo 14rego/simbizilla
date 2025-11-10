@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import dayjs from "dayjs";
+import { djsStart, djsFormat } from "../helpers/dates.js";
 
-export const schemaEvent = new mongoose.Schema({
+export const schemaIncident = new mongoose.Schema({
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -38,7 +39,7 @@ export const schemaEvent = new mongoose.Schema({
     timestamps: true
 });
 
-export const initEvent = {
+export const initIncident = {
     parentId: null,
     parentModel: "",
     categoryId: null,
@@ -48,4 +49,4 @@ export const initEvent = {
     gameStart: dayjs(djsStart).format(djsFormat),
 };
 
-export const Event = mongoose.model("Event", schemaEvent);
+export const Incident = mongoose.model("Incident", schemaIncident);

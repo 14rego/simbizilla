@@ -3,34 +3,38 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setIsBurgerVisible, setPageTitle, unsetFormMessages } from "./store/slices/ui";
-import { useCurrentSignX } from "./hooks/currentSignX";
+import { setIsBurgerVisible, setIsProcessing, setPageTitle, unsetFormMessages } from "./store/slices/ui";
+import { useCurrentTokens } from "./hooks/currentTokens";
 
 const App = () => {
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const currentUser = useCurrentSignX();
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const currentTokens = useCurrentTokens();
 
-  // UI
-  useEffect(() => {
-    //if (location.pathname.indexOf("user") > -1)
-    dispatch(setPageTitle("Get Set"));
-    dispatch(setIsBurgerVisible(false));
-    dispatch(unsetFormMessages());
-  }, [dispatch, location.pathname]);
+    // UI
+    useEffect(() => {
+        if (location.pathname.indexOf("/play") > -1) {
+            dispatch(setPageTitle(currentTokens.organization));
+        } else {
+            dispatch(setPageTitle("Let's Play"));
+        }
+        dispatch(setIsBurgerVisible(false));
+        dispatch(setIsProcessing(false));
+        dispatch(unsetFormMessages());
+    }, [currentTokens.organization, dispatch, location.pathname]);
 
-  // AUTH
-  useEffect(() => {
-    const doesntNeedCreds = [ // allowed routes
-      "/sign/in", 
-      "/sign/up",
-      "/sign/out",
-      "/error"
-    ].includes(location.pathname);
-    const allowed = ((currentUser.email != "" || currentUser.organization != "") || doesntNeedCreds);
-    if (!allowed) navigate("/sign/out");
-  }, [currentUser.organization, currentUser.email, location.pathname, navigate]);
+    // AUTH
+    useEffect(() => {
+        const doesntNeedCreds = [ // allowed routes
+            "/sign/in", 
+            "/sign/up",
+            "/sign/out",
+            "/error"
+        ].includes(location.pathname);
+        const allowed = (doesntNeedCreds || (currentTokens.email != "" && currentTokens.organization != ""));
+        if (!allowed) navigate("/sign/out");
+    }, [currentTokens.organization, currentTokens.email, location.pathname, navigate]);
 
   return (
     <>

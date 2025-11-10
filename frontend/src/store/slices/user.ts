@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Category } from "../models/category";
-import type { Event } from "../models/event";
-import type { Organization } from "./organization";
+import type { Incident } from "../models/incident";
+import type { Organization } from "./game";
 
 export interface User {
     _id: string,
@@ -9,7 +9,7 @@ export interface User {
     title: string,
     organizations?: Organization[]
     categories?: Category[]
-    events?: Event[],
+    incidents?: Incident[],
     balance: number,
     level: number,
     deletedAt?: Date | null,
@@ -21,7 +21,7 @@ export const initUser: User = {
     title: "",
     organizations: [],
     categories: [],
-    events: [],
+    incidents: [],
     balance: 0,
     level: 1,
     deletedAt: null

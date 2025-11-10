@@ -1,19 +1,18 @@
 import mongoose from "mongoose";
 import dayjs from "dayjs";
 import { djsStart, djsFormat } from "../helpers/dates.js";
-import "./checkbook.js";
-import "./incident.js";
 
-export const schemaOrganization = new mongoose.Schema({
-    userId: {
+export const schemaEmployee = new mongoose.Schema({
+    facilityId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Facility",
         required: true
     },
-    facilities: [{
+    categoryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Facility"
-    }],
+        ref: "Category",
+        required: true
+    },
     checkbooks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Checkbook"
@@ -26,9 +25,7 @@ export const schemaOrganization = new mongoose.Schema({
         type: String,
         maxLength: 25,
         trim: true,
-        required: true,
-        unique: true,
-        index: true
+        required: true
     },
     balance: {
         type: Number,
@@ -36,10 +33,6 @@ export const schemaOrganization = new mongoose.Schema({
     },
     level: {
         type: Number,
-        required: true
-    },
-    gameCurrent: {
-        type: String, 
         required: true
     },
     gameStart: {
@@ -51,27 +44,19 @@ export const schemaOrganization = new mongoose.Schema({
         default: null
     },
 }, {
-    timestamps: true,
-    virtuals: {
-        age: {
-            get() {
-                return dayjs(this.start).diff(this.current, djsIncrement);
-            }
-        }
-    }
+    timestamps: true
 });
 
-export const initOrganization = {
-    userId: null,
-    facilities: [],
+export const initEmployee = {
+    facilityId: null,
+    categoryId: null,
     checkbooks: [],
     incidents: [],
     title: "",
     balance: 0,
     level: 1,
-    gameCurrent: dayjs(djsStart).format(djsFormat),
     gameStart: dayjs(djsStart).format(djsFormat),
     deletedAt: null
 };
 
-export const Organization = mongoose.model("Organization", schemaOrganization);
+export const Employee = mongoose.model("Employee", schemaEmployee);

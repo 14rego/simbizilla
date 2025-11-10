@@ -1,18 +1,17 @@
-import { Provider } from "react-redux";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { Provider } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { store } from "./store";
 import "./App.css";
 import App from "./App.tsx";
-import { store } from "./store";
-import SignIn from "./components/sign/SignIn.tsx";
-import SignUp from "./components/sign/SignUp.tsx";
 import Dashboard from "./components/account/Dashboard.tsx";
-import SignOut from "./components/sign/SignOut.tsx";
 import ErrorPage from "./components/layout/Error.tsx";
+import FacilityCreate from "./components/facility/Create.tsx";
+import Play from "./components/account/Play.tsx";
+import SignIn from "./components/sign/SignIn.tsx";
+import SignOut from "./components/sign/SignOut.tsx";
+import SignUp from "./components/sign/SignUp.tsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/play",
+        element: <Play />,
+      },
+      {
+        path: "/create/facility",
+        element: <FacilityCreate />,
       },
       {
         path: "/sign/up",

@@ -1,7 +1,18 @@
-import dayjs from "dayjs";
 import mongoose from "mongoose";
 
 export const schemaUser = new mongoose.Schema({
+    organizations: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization"
+    }],
+    categories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
+    }],
+    incidents: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Incident"
+    }],
     email: {
         type: String,
         maxLength: 40,
@@ -16,18 +27,6 @@ export const schemaUser = new mongoose.Schema({
         trim: true,
         required: true
     },
-    organizations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Organization"
-    }],
-    categories: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category"
-    }],
-    events: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Event"
-    }],
     balance: {
         type: Number,
         required: true
@@ -45,11 +44,11 @@ export const schemaUser = new mongoose.Schema({
 });
 
 export const initUser = {
-    email: "",
-    title: "",
     organizations: [],
     categories: [],
-    events: [],
+    incidents: [],
+    email: "",
+    title: "",
     balance: 0,
     level: 1,
     deletedAt: null

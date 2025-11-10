@@ -124,7 +124,6 @@ main {
 
 /* FORMS */
 fieldset {
-  max-width: calc(var(--container-md) * 0.666);
   padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
   background: var(--color-gray-100);
   border-radius: 3px;

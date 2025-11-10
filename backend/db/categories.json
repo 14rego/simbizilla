@@ -1,0 +1,138 @@
+[
+{
+  "_id": {
+    "$oid": "68fbda3f944c25442a3fbf38"
+  },
+  "title": "Admin",
+  "description": "Can do important stuff",
+  "type": "User"
+},
+{
+  "_id": {
+    "$oid": "68fbdaa5944c25442a3fbf39"
+  },
+  "title": "Player",
+  "description": "Can play",
+  "type": "User"
+},
+{
+  "_id": {
+    "$oid": "68fbdaba944c25442a3fbf3a"
+  },
+  "title": "Banned",
+  "description": "Can no longer play",
+  "type": "User"
+},
+{
+  "_id": {
+    "$oid": "68fbde35944c25442a3fbf3d"
+  },
+  "title": "Waiting",
+  "description": "Waiting for approval",
+  "type": "User"
+},
+{
+  "_id": {
+    "$oid": "69028ae8373814b40009a8e5"
+  },
+  "title": "Agriculture and Natural Resources",
+  "type": "Facility",
+  "description": "Includes farming, forestry, fishing, and mining."
+},
+{
+  "_id": {
+    "$oid": "69028b6c373814b40009a8e6"
+  },
+  "title": "Arts, Media, and Entertainment",
+  "type": "Facility",
+  "description": "Covers creative and media-related industries, such as film, music, and publishing."
+},
+{
+  "_id": {
+    "$oid": "69028b85373814b40009a8e7"
+  },
+  "title": "Building and Construction",
+  "type": "Facility",
+  "description": "Deals with residential, commercial, and heavy engineering construction."
+},
+{
+  "_id": {
+    "$oid": "69028b92373814b40009a8e8"
+  },
+  "title": "Business and Finance",
+  "type": "Facility",
+  "description": "Includes financial services, insurance, and business management."
+},
+{
+  "_id": {
+    "$oid": "69028b9e373814b40009a8e9"
+  },
+  "title": "Education, Child Development, and Family Services",
+  "type": "Facility",
+  "description": "Focuses on learning institutions and support services."
+},
+{
+  "_id": {
+    "$oid": "69028bad373814b40009a8ea"
+  },
+  "title": "Energy, Environment, and Utilities",
+  "type": "Facility",
+  "description": "Encompasses energy production, power distribution, and environmental services."
+},
+{
+  "_id": {
+    "$oid": "69028bc0373814b40009a8eb"
+  },
+  "title": "Health Science and Medical Technology",
+  "type": "Facility",
+  "description": "Covers healthcare services, biotechnology, and medical device manufacturing."
+},
+{
+  "_id": {
+    "$oid": "69028bcf373814b40009a8ec"
+  },
+  "title": "Hospitality, Tourism, and Recreation",
+  "type": "Facility",
+  "description": "Includes hotels, restaurants, and other leisure activities."
+},
+{
+  "_id": {
+    "$oid": "69028bda373814b40009a8ed"
+  },
+  "title": "Information and Communication Technology",
+  "type": "Facility",
+  "description": "Involves software, networking, and telecommunications."
+},
+{
+  "_id": {
+    "$oid": "69028be4373814b40009a8ee"
+  },
+  "title": "Manufacturing and Product Development",
+  "type": "Facility",
+  "description": "Covers the creation of physical goods."
+},
+{
+  "_id": {
+    "$oid": "69028bee373814b40009a8ef"
+  },
+  "title": "Marketing, Sales, and Services",
+  "type": "Facility",
+  "description": "Includes advertising, sales, and professional services."
+},
+{
+  "_id": {
+    "$oid": "69028bf9373814b40009a8f0"
+  },
+  "title": "Public Services",
+  "type": "Facility",
+  "description": "Encompasses public safety, legal practices, and government functions."
+},
+{
+  "_id": {
+    "$oid": "69028c05373814b40009a8f1"
+  },
+  "title": "Transportation",
+  "type": "Facility",
+  "description": "Involves logistics, air travel, and ground transport."
+}
+]

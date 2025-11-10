@@ -5,10 +5,15 @@ import { Category } from "../models/category.js";
 import { User, initUser } from "../models/user.js";
 import { Organization, initOrganization } from "../models/organization.js";
 import sanitize from "mongo-sanitize";
+import { apiData, gameObject } from "../helpers/responses.js";
 
 const router = express.Router();
 
-// CREATE / POST ONE
+/* CREATE ONE
+email: string
+title: string
+organization: string
+*/
 router.post("/signup", async (req, res) => {
     mongooseConn().then(async () => {
         const response = {
@@ -21,19 +26,17 @@ router.post("/signup", async (req, res) => {
         });
         const newUser = await User.create({
             ...initUser,
-            email: sanitize(req.body.email),
-            title: sanitize(req.body.title),
+            email: sanitize(req.body.payload.email),
+            title: sanitize(req.body.payload.title),
             categories: [ role.id ]
         });
-        console.log(newUser);
         response.user = Object.assign(newUser);
         if (newUser) {
             const newCorp = await Organization.create({
                 ...initOrganization,
                 userId: newUser._id,
-                title: sanitize(req.body.organization),
+                title: sanitize(req.body.payload.organization),
             });
-            console.log(newCorp);
             if (newCorp) {
                 newUser.organizations.push(newCorp._id);
                 await newUser.save();
@@ -41,14 +44,16 @@ router.post("/signup", async (req, res) => {
                 response.organization = Object.assign(newCorp);
             }
         }
-        res.send(response).status(!response.user || !response.organization ? 204 : 200);
+        apiData(res, response, (!response.user || !response.organization ? 204 : 200));
     }).catch((err) => {
-        console.error(err);
-        res.status(500).send("Error adding user");
+        apiData(res, `Error adding user`, 500, err);
     });
 });
 
-// READ / GET ONE
+/* READ ONE
+email: string
+organization: string
+*/
 router.post("/signin", async (req, res) => {
     mongooseConn().then(async () => {
         const response = {
@@ -57,23 +62,22 @@ router.post("/signin", async (req, res) => {
         };
         const role = await Category.findOne({ type: "User", title: "Player" });
         const gotUser = await User.findOne({
-            email: sanitize(req.body.email),
+            email: sanitize(req.body.payload.email),
             categories: role._id
-        }).populate("organizations");
+        }).populate("organizations", "-checkbooks -incidents");
         if (gotUser) {
-            response.user = Object.assign(gotUser);
-            const gotCorp = await Organization.findOne({
-                title: sanitize(req.body.organization),
+            response.user = gotUser;
+            const gotOrg = await Organization.findOne({
+                title: sanitize(req.body.payload.organization),
                 userId: gotUser._id
             });
-            if (gotCorp) {
-                response.organization = Object.assign(gotCorp);
+            if (gotOrg) {
+                response.organization = await gameObject(gotOrg._id);
             }
         }
-        res.send(response).status(!response.user || !response.organization ? 204 : 200);
+        apiData(res, response, (!response.user || !response.organization ? 204 : 200));
     }).catch((err) => {
-        console.error(err);
-        res.status(500).send("Error finding sign in info");
+        apiData(res, `Error finding sign in info`, 500, err);
     });
 });
 

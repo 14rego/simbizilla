@@ -1,10 +1,10 @@
 import { combineReducers, type Reducer } from "redux";
-import { sliceOrganization } from "./organization";
+import { sliceGame } from "./game";
 import { sliceUI } from "./ui";
 import { sliceUser } from "./user";
 
 const rootReducer: Reducer = combineReducers({
-    organization: sliceOrganization.reducer,
+    game: sliceGame.reducer,
     ui: sliceUI.reducer,
     user: sliceUser.reducer,
 });

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { djsFormat, djsStart } from "../slices/ui";
 
-export interface Event {
+export interface Incident {
     _id: string,
     parentId: string,
     parentModel: string,
@@ -12,7 +12,7 @@ export interface Event {
     gameStart: string
 };
 
-export const initEvent: Event = {
+export const initIncident: Incident = {
     _id: "",
     parentId: "",
     parentModel: "",

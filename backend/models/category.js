@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export const schemaCategory = new mongoose.Schema({
     title: {
         type: String,
-        maxLength: 25,
+        maxLength: 100,
         trim: true,
         required: true,
         unique: true,
@@ -16,7 +16,7 @@ export const schemaCategory = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxLength: 100,
+        maxLength: 250,
         required: true,
     },
 });
@@ -24,6 +24,7 @@ export const schemaCategory = new mongoose.Schema({
 export const initCategory = {
     title: "",
     type: "",
+    description: ""
 };
 
 export const Category = mongoose.model("Category", schemaCategory);

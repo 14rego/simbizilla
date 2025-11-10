@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import accounts from "./routes/accounts.js";
+import facilities from "./routes/facilities.js";
 import organizations from "./routes/organizations.js";
 
 const PORT = process.env.MONGOPORT || 5050;
@@ -24,6 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/accounts", accounts);
+app.use("/api/facilities", facilities);
 app.use("/api/organizations", organizations);
 
 // start the Express server
