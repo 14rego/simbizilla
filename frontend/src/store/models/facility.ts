@@ -1,12 +1,16 @@
+import type { Checkbook } from "./checkbook";
+import type { Employee } from "./employee";
+import type { Incident } from "./incident";
+
 export interface Facility {
     _id: string,
     organizationId: string,
     categoryId: string,
     locationId: string,
     title: string,
-    employees: [],
-    checkbooks: [],
-    incidents: [],
+    employees: Employee[],
+    checkbooks: Checkbook[],
+    incidents: Incident[],
     balance: number,
     level: number,
     gameStart: string,

@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { initUI, type FormMessage } from "../models/ui";
+import { initUI } from "../models/ui";
+import type { FormMessage } from "../models/form";
 
 export const sliceUI = createSlice({
     name: "ui",

@@ -1,24 +1,24 @@
 import dayjs from "dayjs";
 import { djsFormat, djsStart } from "../../features/formatting/helpers";
 
-export interface Incident {
+export interface Checkbook {
     _id: string,
     parentId: string,
     parentModel: string,
     categoryId: string,
     title: string,
-    description: string,
-    level: number,
+    units: string,
+    value: number,
     gameStart: string
 };
 
-export const initIncident: Incident = {
+export const initCheckbook: Checkbook = {
     _id: "",
     parentId: "",
     parentModel: "",
     categoryId: "",
     title: "",
-    description: "",
-    level: 1,
+    units: "",
+    value: 0,
     gameStart: dayjs(djsStart).format(djsFormat)
 };

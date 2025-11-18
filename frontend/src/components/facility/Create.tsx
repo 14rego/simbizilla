@@ -10,7 +10,7 @@ import type { RootState } from "../../store";
 import type { Category } from "../../store/models/category";
 import type { Location } from "../../store/models/location";
 import { monetize } from "../../features/formatting/helpers";
-import { initApiPayload } from "../../store/models/form";
+import { typedApiPayload } from "../../store/models/form";
 
 const FacilityCreate = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -18,7 +18,11 @@ const FacilityCreate = (): JSX.Element => {
     const ui = useSelector((state: RootState) => state.ui);
 
     const game = useSelector((state: RootState) => state.game);
-    const [form, setForm] = useState(_.cloneDeep(initApiPayload));
+    const [form, setForm] = useState(typedApiPayload({
+        category: "",
+        location: "",
+        title: ""
+    }));
     form.game = game._id;
 
     const [support, setSupport] = useState({ 

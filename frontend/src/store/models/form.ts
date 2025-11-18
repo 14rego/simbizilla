@@ -1,17 +1,20 @@
+import _ from "lodash";
 
-export interface ApiPayload {
+export interface ApiPayload<PayloadData> {
     game: string,
-    payload: object,
+    payload: PayloadData
 };
 
-export const initApiPayload: ApiPayload = {
-    game: "",
-    payload: {},
+export function typedApiPayload<PayloadData> (pl: PayloadData, g: string = "") {
+    return _.merge({}, {
+        game: g,
+        payload: pl
+    });
 };
 
 export interface ApiResponse {
     data: object | null,
-    errors: Array<object>,
+    errors: object[],
     ok: boolean,
     status: number
 };

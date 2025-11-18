@@ -1,7 +1,7 @@
 import { type JSX } from "react";
-import type { FormMessage } from "../../store/slices/ui";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
+import type { FormMessage } from "../../store/models/form";
 
 const FormMessages = (): JSX.Element => {
   const formMsgs = useSelector((state: RootState) => state.ui.formMessages);    

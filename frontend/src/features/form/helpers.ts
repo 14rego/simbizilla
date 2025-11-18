@@ -1,6 +1,6 @@
 import _ from "lodash";
 import type { SetStateAction } from "react";
-import { initApiPayload, type ApiPayload } from "../../store/models/form";
+import { typedApiPayload, type ApiPayload } from "../../store/models/form";
 
 const apiURL = import.meta.env.VITE_APIURL;
 
@@ -38,10 +38,10 @@ export const apiPost = async (path: string, body: object) => {
     });
 };
 
-export const updateForm = (setter: React.Dispatch<SetStateAction<ApiPayload>>, value: object) => {
-    return setter((prev: ApiPayload) => {
-        return _.merge({}, initApiPayload, prev, {
-            payload: _.merge({}, prev.payload, value)
-        });
+export function updateForm<PayloadData> (
+    setter: React.Dispatch<SetStateAction<ApiPayload<PayloadData>>>, 
+    vals: unknown) {
+    return setter((prev: ApiPayload<PayloadData>) => {
+        return typedApiPayload(_.merge({}, prev.payload, vals), prev.game);
     });
 };

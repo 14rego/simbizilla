@@ -1,33 +1,30 @@
 import dayjs from "dayjs";
 import { djsFormat, djsStart } from "../../features/formatting/helpers";
-import type { Facility } from "./facility";
-import type { Incident } from "./incident";
 import type { Checkbook } from "./checkbook";
+import type { Incident } from "./incident";
 
-export interface Organization {
+export interface Employee {
     _id: string,
-    userId: string
+    facilityId: string,
+    categoryId: string,
+    checkbooks: Checkbook[],
+    incidents: Incident[],
     title: string,
-    facilities?: Facility[],
-    checkbooks?: Checkbook[],
-    incidents?: Incident[],
     balance: number,
     level: number,
-    gameCurrent: string,
     gameStart: string,
     deletedAt?: Date | null
 };
 
-export const initOrganization: Organization = {
+export const initEmployee: Employee = {
     _id: "",
-    userId: "",
-    title: "",
-    facilities: [],
+    facilityId: "",
+    categoryId: "",
     checkbooks: [],
     incidents: [],
+    title: "",
     balance: 0,
     level: 1,
-    gameCurrent: dayjs(djsStart).format(djsFormat),
     gameStart: dayjs(djsStart).format(djsFormat),
     deletedAt: null
 };

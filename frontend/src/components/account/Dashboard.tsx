@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/index";
-import { setGame, type Organization } from "../../store/slices/game";
+import { setGame } from "../../store/slices/game";
 import type { JSX } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost } from "../../features/form/helpers";
@@ -8,6 +8,7 @@ import { setFormMessages, setIsAuthorized, setIsProcessing } from "../../store/s
 import dayjs from "dayjs";
 import FormMessages from "../../features/form/FormMessages";
 import { djsIncrement } from "../../features/formatting/helpers";
+import type { Organization } from "../../store/models/organization";
 
 const NoFacilities = (): JSX.Element => {
     const game = useSelector((state: RootState) => state.game);

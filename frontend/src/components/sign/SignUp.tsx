@@ -5,15 +5,18 @@ import { apiPost, handleBlur, updateForm } from "../../features/form/helpers";
 import { setFormMessages, setIsProcessing } from "../../store/slices/ui";
 import { setUser, unsetUser } from "../../store/slices/user";
 import { setGame } from "../../store/slices/game";
-import _ from "lodash";
 import FormMessages from "../../features/form/FormMessages";
 import type { RootState } from "../../store";
-import { initApiPayload } from "../../store/models/form";
+import { typedApiPayload } from "../../store/models/form";
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [form, setForm] = useState(_.cloneDeep(initApiPayload));
+    const [form, setForm] = useState(typedApiPayload({
+        email: "",
+        title: "",
+        organization: "",
+    }));
     const ui = useSelector((state: RootState) => state.ui);
 
     async function onSubmit(e: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
