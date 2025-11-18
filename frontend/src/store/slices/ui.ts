@@ -1,49 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-export interface ApiPayload {
-    game: string,
-    payload: object,
-};
-
-export const initApiPayload: ApiPayload = {
-    game: "",
-    payload: {},
-};
-
-export interface ApiResponse {
-    data: object | null,
-    errors: Array<object>,
-    ok: boolean,
-    status: number
-};
-
-export const initApiResponse: ApiResponse = {
-    data: null,
-    errors: [],
-    ok: false,
-    status: 500
-};
-
-export interface FormMessage {
-    message: string,
-    type: string
-};
-
-export interface UIObj {
-    isAuthorized: boolean,
-    isBurgerVisible: boolean,
-    isProcessing: boolean,
-    pageTitle: string,
-    formMessages: FormMessage[],
-};
-
-export const initUI: UIObj = {
-    isAuthorized: false,
-    isBurgerVisible: false,
-    isProcessing: false,
-    pageTitle: "Error",
-    formMessages: []
-};
+import { initUI, type FormMessage } from "../models/ui";
 
 export const sliceUI = createSlice({
     name: "ui",

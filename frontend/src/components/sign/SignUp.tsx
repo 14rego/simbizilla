@@ -2,12 +2,13 @@ import { useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost, handleBlur, updateForm } from "../../features/form/helpers";
-import { initApiPayload, setFormMessages, setIsProcessing } from "../../store/slices/ui";
+import { setFormMessages, setIsProcessing } from "../../store/slices/ui";
 import { setUser, unsetUser } from "../../store/slices/user";
 import { setGame } from "../../store/slices/game";
 import _ from "lodash";
 import FormMessages from "../../features/form/FormMessages";
 import type { RootState } from "../../store";
+import { initApiPayload } from "../../store/models/form";
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();

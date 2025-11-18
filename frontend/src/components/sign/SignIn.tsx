@@ -6,8 +6,9 @@ import { setUser, unsetUser } from "../../store/slices/user";
 import { setGame } from "../../store/slices/game";
 import _ from "lodash";
 import FormMessages from "../../features/form/FormMessages";
-import { setIsAuthorized, setFormMessages, setIsProcessing, initApiPayload } from "../../store/slices/ui";
+import { setIsAuthorized, setFormMessages, setIsProcessing } from "../../store/slices/ui";
 import type { RootState } from "../../store";
+import { initApiPayload } from "../../store/models/form";
 
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();

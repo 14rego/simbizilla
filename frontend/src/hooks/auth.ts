@@ -11,24 +11,24 @@ export interface Tokens {
     organization: string
 };
 
-export const useCurrentTokens = (): Tokens => {
+export const useAuth = (): Tokens => {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
-    const org = useSelector((state: RootState) => state.game);
+    const game = useSelector((state: RootState) => state.game);
     const ui = useSelector((state: RootState) => state.ui);
 
     const result: Tokens = useMemo(() => {
         return {
             email: user.email,
-            organization: org.title
+            organization: game.title
         }
-    }, [org.title, user.email]);
+    }, [game.title, user.email]);
 
     useEffect(() => {
-        if (!ui.isAuthorized || user._id == "" || org._id == "") {
+        if (!ui.isAuthorized || user._id == "" || game._id == "") {
             // in case we just lost our connection
             const userFromSS = sessionStorage.getItem(ssKeyUser) || user._id;
-            const orgFromSS = sessionStorage.getItem(ssKeyOrg) || org._id;
+            const orgFromSS = sessionStorage.getItem(ssKeyOrg) || game._id;
             if (userFromSS != "" && orgFromSS != "") {
                 apiPost(`accounts/signin`, {
                     payload: {
@@ -48,7 +48,7 @@ export const useCurrentTokens = (): Tokens => {
                 });
             }
         }
-    }, [org._id, dispatch, result, ui.isAuthorized, user._id]);
+    }, [game._id, dispatch, result, ui.isAuthorized, user._id]);
 
     return result;
 };

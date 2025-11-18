@@ -5,11 +5,12 @@ import { apiGet, apiPost, handleBlur, updateForm } from "../../features/form/hel
 import { setGame } from "../../store/slices/game";
 import _ from "lodash";
 import FormMessages from "../../features/form/FormMessages";
-import { setFormMessages, setIsProcessing, initApiPayload } from "../../store/slices/ui";
+import { setFormMessages, setIsProcessing } from "../../store/slices/ui";
 import type { RootState } from "../../store";
 import type { Category } from "../../store/models/category";
 import type { Location } from "../../store/models/location";
 import { monetize } from "../../features/formatting/helpers";
+import { initApiPayload } from "../../store/models/form";
 
 const FacilityCreate = (): JSX.Element => {
     const dispatch = useDispatch();
