@@ -31,7 +31,7 @@ export const schemaOrganization = new mongoose.Schema({
         index: true
     },
     balance: {
-        type: Number,
+        type: mongoose.Types.Double,
         required: true
     },
     level: {

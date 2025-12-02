@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { djsFormat, djsStart } from "../../features/formatting/helpers";
+import { djsFormat, djsStart } from "../../helpers/format";
 
 export interface Checkbook {
     _id: string,
@@ -21,4 +21,10 @@ export const initCheckbook: Checkbook = {
     units: "",
     value: 0,
     gameStart: dayjs(djsStart).format(djsFormat)
+};
+
+export interface CostMap {
+    id: number,
+    init: number,
+    iter: number
 };

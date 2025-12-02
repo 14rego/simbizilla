@@ -23,10 +23,4 @@ export const initLocation = {
     level: 1,
 };
 
-export const priceMapLocation = {
-    1: 100000,
-    2: 250000,
-    3: 750000
-};
-
 export const Location = mongoose.model("Location", schemaLocation);

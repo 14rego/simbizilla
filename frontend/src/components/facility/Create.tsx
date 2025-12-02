@@ -1,7 +1,7 @@
 import { useEffect, useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { apiGet, apiPost, handleBlur, updateForm } from "../../features/form/helpers";
+import { apiGet, apiPost, handleBlur, updateForm } from "../../helpers/form";
 import { setGame } from "../../store/slices/game";
 import _ from "lodash";
 import FormMessages from "../../features/form/FormMessages";
@@ -9,8 +9,9 @@ import { setFormMessages, setIsProcessing } from "../../store/slices/ui";
 import type { RootState } from "../../store";
 import type { Category } from "../../store/models/category";
 import type { Location } from "../../store/models/location";
-import { monetize } from "../../features/formatting/helpers";
+import { djsIncrement, monetize } from "../../helpers/format";
 import { typedApiPayload } from "../../store/models/form";
+import { type CostMap } from "../../store/models/checkbook";
 
 const FacilityCreate = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -25,11 +26,16 @@ const FacilityCreate = (): JSX.Element => {
     }));
     form.game = game._id;
 
-    const [support, setSupport] = useState({ 
+    const [support, setSupport] = useState<{
+        loading: boolean,
+        categories: Category[],
+        locations: Location[],
+        costMap: CostMap[]
+    }>({ 
         loading: true,
         categories: [],
         locations: [],
-        priceMapLocation: {}
+        costMap: []
     });
     const getSupport = () => {
         if (support.loading === true) apiGet(`facilities/support`).then((res) => {
@@ -67,27 +73,33 @@ const FacilityCreate = (): JSX.Element => {
             <fieldset>
                 <legend>New Facility</legend>
                 <div className="form-control-stack mb-2">
-                    <p>Category</p>
-                    {support.categories.map((c: Category) => {
-                        const isSelected = c._id == form.payload.category;
-                        return (<label key={c._id} className="form-radio" aria-selected={isSelected}>
-                            <input type="radio" name="category" required value={c._id} checked={isSelected}
-                            onChange={(e) => updateForm(setForm, { category: e.target.value })} />
-                            <span className="inline-block pl-2">{c.title}</span>
-                            <span className="block">{c.description}</span>
-                        </label>)
-                    })}
+                    <p className="form-group-label">Category</p>
+                    <div className="md:grid grid-cols-2 gap-2">
+                        {support.categories.map((c: Category) => {
+                            const isSelected = c._id == form.payload.category;
+                            return (<label key={c._id} className="form-radio" aria-selected={isSelected}>
+                                <input type="radio" name="category" required value={c._id} checked={isSelected}
+                                onChange={(e) => updateForm(setForm, { category: e.target.value })} />
+                                <span className="radio-title">{c.title}</span>
+                                <span className="radio-more">{c.description}</span>
+                            </label>)
+                        })}
+                    </div>
                 </div>
                 <div className="form-control-stack mb-2">
-                    <p>Location</p>
+                    <p className="form-group-label">Location</p>
                     {support.locations.map((l: Location) => {
                         const isSelected = l._id == form.payload.location;
+                        const costs = support.costMap.find(m => m.id == l.level);
+                        const costInit = costs?.init || 0;
+                        const costIter = costs?.iter || 0; 
                         return (<label key={l._id} className="form-radio" aria-selected={isSelected}>
                             <input type="radio" name="location" required value={l._id} checked={isSelected}
+                            disabled={costInit > game.balance}
                             onChange={(e) => updateForm(setForm, { location: e.target.value })} />
-                            <span className="inline-block pl-2">{l.title}</span>
-                            <span className="block">{monetize(_.get(support.priceMapLocation, l.level))}</span>
-                            <span className="block">{l.description}</span>
+                            <span className="radio-title">{l.title}</span>
+                            <span className="radio-more">{monetize(costInit)} then {monetize(costIter)}/{djsIncrement}</span>
+                            <span className="radio-more">{l.description}</span>
                         </label>)
                     })}
                 </div>

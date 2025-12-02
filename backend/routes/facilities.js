@@ -3,10 +3,11 @@ import mongooseConn from "../db/mongoose.js";
 import dayjs from "dayjs";
 import { djsFormat } from "../helpers/dates.js";
 import { Category } from "../models/category.js";
-import { Location, priceMapLocation } from "../models/location.js";
+import { Location } from "../models/location.js";
 import sanitize from "mongo-sanitize";
 import { Facility, initFacility } from "../models/facility.js";
 import { apiData, gameObject } from "../helpers/responses.js";
+import { costMap } from "../helpers/money.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/support", async (req, res) => {
         apiData(res, {
             categories: c,
             locations: l,
-            priceMapLocation: priceMapLocation
+            costMap: costMap.locations
         }, (c.length < 1 || l.length < 1 ? 204 : 200));
     }).catch((err) => {
         apiData(res, `Error finding support for facilities`, 500, err);
@@ -36,17 +37,23 @@ router.post("/create", async (req, res) => {
         const org = await gameObject(sanitize(req.body.game));
         const category = await Category.findById(sanitize(req.body.payload.category));
         const location = await Location.findById(sanitize(req.body.payload.location));
-        const newFacility = await Facility.create({
-            ...initFacility,
-            organizationId: org._id,
-            categoryId: category._id,
-            locationId: location._id,
-            title: sanitize(req.body.payload.title),
-            gameStart: dayjs(org.gameCurrent).format(djsFormat),
-        });
-        org.facilities.push(newFacility);
-        await org.save();
-        apiData(res, org);
+        let cost = costMap.locations.find(m => m.id == location.level).init;
+        if (org.balance >= cost) {
+            const newFacility = await Facility.create({
+                ...initFacility,
+                organizationId: org._id,
+                categoryId: category._id,
+                locationId: location._id,
+                title: sanitize(req.body.payload.title),
+                gameStart: dayjs(org.gameCurrent).format(djsFormat),
+            });
+            org.facilities.push(newFacility);
+            org.balance -= cost;
+            await org.save();
+            apiData(res, org);
+        } else {
+            apiData(res, org, 204, `Insufficient funds.`);
+        }
     }).catch((err) => {
         apiData(res, `Error adding facility`, 500, err);
     });

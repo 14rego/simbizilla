@@ -4,8 +4,8 @@ import { useEffect, useState, type JSX } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import type { Facility } from "../../store/models/facility";
-import { djsIncrement, monetize } from "../../features/formatting/helpers";
-import { apiGet } from "../../features/form/helpers";
+import { djsIncrement, monetize } from "../../helpers/format";
+import { apiGet } from "../../helpers/form";
 import _ from "lodash";
 import { initLocation, type Location } from "../../store/models/location";
 import { initCategory, type Category } from "../../store/models/category";
@@ -17,7 +17,7 @@ const Play = (): JSX.Element => {
         loading: true,
         categories: [],
         locations: [],
-        priceMapLocation: {}
+        costMapLocations: []
     });
     const getSupport = () => {
         if (support.loading === true) apiGet(`facilities/support`).then((res) => {

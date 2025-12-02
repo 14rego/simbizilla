@@ -1,7 +1,7 @@
 import { useState, type JSX, type SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { apiPost, handleBlur, updateForm } from "../../features/form/helpers";
+import { apiPost, handleBlur, updateForm } from "../../helpers/form";
 import { setUser, unsetUser } from "../../store/slices/user";
 import { setGame } from "../../store/slices/game";
 import FormMessages from "../../features/form/FormMessages";

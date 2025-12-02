@@ -28,7 +28,7 @@ export const schemaEmployee = new mongoose.Schema({
         required: true
     },
     balance: {
-        type: Number,
+        type: mongoose.Types.Double,
         required: true
     },
     level: {

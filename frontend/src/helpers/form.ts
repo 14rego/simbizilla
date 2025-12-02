@@ -1,6 +1,6 @@
 import _ from "lodash";
 import type { SetStateAction } from "react";
-import { typedApiPayload, type ApiPayload } from "../../store/models/form";
+import { typedApiPayload, type ApiPayload } from "../store/models/form";
 
 const apiURL = import.meta.env.VITE_APIURL;
 

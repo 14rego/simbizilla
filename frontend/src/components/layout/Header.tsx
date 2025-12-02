@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import type { RootState } from "../../store";
 import { setIsBurgerVisible } from "../../store/slices/ui";
 import { ChevronRight, Menu } from "lucide-react";
 import { useMemo, type JSX } from "react";
+import { monetize } from "../../helpers/format";
 
 interface BreadcrumbItem {
     title: string,
@@ -25,9 +26,9 @@ export default function Header() {
                 </button>
                 <nav id="burger" className={ui.isBurgerVisible ? 'absolute block shadow-md border rounded-lg mt-0.5 p-2 border-gray-200 bg-white dark:bg-purple-900' : 'sr-only'} aria-hidden={!ui.isBurgerVisible} aria-label="Main Navigation">
                     <ul>
-                        <li><Link to="/" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">{user.title}&rsquo;s Dashboard</Link></li>
-                        <li><Link to="/play" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Play {game.title}</Link></li>
-                        <li><Link to="/sign/out" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Sign Out</Link></li>
+                        <li><NavLink to="/" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">{user.title}&rsquo;s Dashboard</NavLink></li>
+                        <li><NavLink to="/play" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Play {game.title}</NavLink></li>
+                        <li><NavLink to="/sign/out" className="block p-2 leading-none whitespace-nowrap text-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800">Sign Out</NavLink></li>
                     </ul>
                 </nav>
             </div>
@@ -55,9 +56,11 @@ export default function Header() {
         return arr;
     }, [location.pathname]);
 
-    const breadcrumbNav = (): JSX.Element => {
-        if (breadcrumbs.length > 1) return (
-            <nav aria-label="Breadcrumb">
+    return (
+        <header>
+            {burger()}
+            <h1 className="uppercase">{ui.pageTitle}</h1>
+            {breadcrumbs.length > 1 ? (<nav aria-label="Breadcrumb">
                 <ol className="ml-4 flex items-center list-none">
                     {breadcrumbs.map((item, i) => {
                         if (item.path != location.pathname) return (
@@ -72,16 +75,8 @@ export default function Header() {
                         </li>;
                     })}
                 </ol>
-            </nav>
-        );
-        return <></>;
-    };
-
-    return (
-        <header>
-            {burger()}
-            <h1 className="uppercase">{ui.pageTitle}</h1>
-            {breadcrumbNav()}
+            </nav>) : null}
+            {ui.isAuthorized ? (<span className="ml-auto">{monetize(game.balance)}</span>) : null}
         </header>
     );
 }

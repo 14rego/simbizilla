@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store";
-import { apiPost } from "../features/form/helpers";
+import { apiPost } from "../helpers/form";
 import { setUser, ssKeyUser, unsetUser } from "../store/slices/user";
 import { setGame, ssKeyOrg } from "../store/slices/game";
 import { setIsAuthorized } from "../store/slices/ui";
+import { redirect } from "react-router-dom";
 
 export interface Tokens {
     email: string,
@@ -27,6 +28,7 @@ export const useAuth = (): Tokens => {
     useEffect(() => {
         if (!ui.isAuthorized || user._id == "" || game._id == "") {
             // in case we just lost our connection
+            const path = window.location.pathname;
             const userFromSS = sessionStorage.getItem(ssKeyUser) || user._id;
             const orgFromSS = sessionStorage.getItem(ssKeyOrg) || game._id;
             if (userFromSS != "" && orgFromSS != "") {
@@ -43,6 +45,7 @@ export const useAuth = (): Tokens => {
                             result.email = res.data.user.email;
                             result.organization = res.data.organization.title;
                             dispatch(setIsAuthorized(true));
+                            redirect(path);
                         }
                     } else dispatch(unsetUser());
                 });
