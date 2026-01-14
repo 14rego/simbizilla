@@ -3,8 +3,8 @@ import { djsFormat, djsStart } from "../../helpers/format";
 
 export interface Incident {
     _id: string,
-    parentId: string,
-    parentModel: string,
+    on: string,
+    onModel: string,
     categoryId: string,
     title: string,
     description: string,
@@ -14,8 +14,8 @@ export interface Incident {
 
 export const initIncident: Incident = {
     _id: "",
-    parentId: "",
-    parentModel: "",
+    on: "",
+    onModel: "",
     categoryId: "",
     title: "",
     description: "",

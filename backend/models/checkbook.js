@@ -3,14 +3,19 @@ import dayjs from "dayjs";
 import { djsStart, djsFormat } from "../helpers/dates.js";
 
 export const schemaCheckbook = new mongoose.Schema({
-    parentId: {
+    on: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        refPath: "parentModel"
+        refPath: "onModel"
     },
-    parentModel: {
+    onModel: {
         type: String,
         required: true,
+        enum: [
+            "Organization",
+            "Facility",
+            "Employee"
+        ]
     },
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,11 +24,8 @@ export const schemaCheckbook = new mongoose.Schema({
     },
     title: {
         type: String,
-        maxLength: 25,
-        trim: true,
-        required: true,
-        unique: true,
-        index: true
+        maxLength: 50,
+        required: true
     },
     units: {
         type: String,
@@ -40,9 +42,9 @@ export const schemaCheckbook = new mongoose.Schema({
 });
 
 export const initCheckbook = {
-    parentId: "",
-    parentModel: "",
-    caregoryId: "",
+    on: null,
+    onModel: "",
+    categoryId: "",
     title: "",
     units: "",
     value: 0,

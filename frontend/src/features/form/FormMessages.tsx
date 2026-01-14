@@ -10,7 +10,7 @@ const FormMessages = (): JSX.Element => {
     switch (m.type.toLowerCase()) {
       case "error":
         return (
-          <li className="mb-0.5 text-xs text-red-700" key={m.message}>
+          <li className="mb-0.5 text-xs text-red-700 dark:text-red-300" key={m.message}>
             <strong>Error:&nbsp;</strong>
             <span>{m.message}</span>
           </li>

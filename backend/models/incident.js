@@ -3,14 +3,19 @@ import dayjs from "dayjs";
 import { djsStart, djsFormat } from "../helpers/dates.js";
 
 export const schemaIncident = new mongoose.Schema({
-    parentId: {
+    on: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        refPath: "parentModel"
+        refPath: "onModel"
     },
-    parentModel: {
+    onModel: {
         type: String,
         required: true,
+        enum: [
+            "Organization",
+            "Facility",
+            "Employee"
+        ]
     },
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,8 +45,8 @@ export const schemaIncident = new mongoose.Schema({
 });
 
 export const initIncident = {
-    parentId: null,
-    parentModel: "",
+    on: null,
+    onModel: "",
     categoryId: null,
     title: "",
     description: "",

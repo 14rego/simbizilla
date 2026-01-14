@@ -6,7 +6,7 @@ const db = process.env.MONGODBNAME || "";
 const mongooseConn = async () => {
     try {
         await mongoose.connect(uri, { dbName: db });
-        console.log("Successfully connected to Mongooose.");
+        console.debug("Mongooose connected.");
     } catch(err) {
         console.error(err);
     }

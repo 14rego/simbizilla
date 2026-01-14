@@ -3,8 +3,8 @@ import { djsFormat, djsStart } from "../../helpers/format";
 
 export interface Checkbook {
     _id: string,
-    parentId: string,
-    parentModel: string,
+    on: string,
+    onModel: string,
     categoryId: string,
     title: string,
     units: string,
@@ -14,8 +14,8 @@ export interface Checkbook {
 
 export const initCheckbook: Checkbook = {
     _id: "",
-    parentId: "",
-    parentModel: "",
+    on: "",
+    onModel: "",
     categoryId: "",
     title: "",
     units: "",
@@ -23,8 +23,13 @@ export const initCheckbook: Checkbook = {
     gameStart: dayjs(djsStart).format(djsFormat)
 };
 
+export interface CostMapItem {
+    title: string,
+    amount: number
+};
+
 export interface CostMap {
     id: number,
-    init: number,
-    iter: number
+    init: CostMapItem,
+    iter: CostMapItem
 };

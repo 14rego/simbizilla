@@ -1,6 +1,7 @@
 import mongooseConn from "../db/mongoose.js";
 import { Organization } from "../models/organization.js";
 import { Employee } from "../models/employee.js";
+import { sortGameStartAsc, sortGameStartDesc } from "./dates.js";
 
 // normalize API responses
 export const apiData = (res, d, status = 200, err = null) => {
@@ -51,6 +52,13 @@ export const gameObject = (id) => {
                     path: "incidents"
                 },
             ]);
+        game.facilities.sort(sortGameStartDesc).forEach(fac => {
+            fac.checkbooks.sort(sortGameStartDesc);
+            fac.incidents.sort(sortGameStartDesc);
+            fac.employees.sort(sortGameStartAsc);
+        });
+        game.checkbooks.sort(sortGameStartDesc);
+        game.incidents.sort(sortGameStartDesc);
         return game;
     }).catch((err) => {
         console.error(err);

@@ -2,18 +2,36 @@ export const costMap = {
     locations: [
         {
             id: 1,
-            init: 100000,
-            iter: 100
+            init: {
+                title: "Location Purchase",
+                amount: 100000,
+            },
+            iter: {
+                title: "Location Costs",
+                amount: 100,
+            }
         },
         {
             id: 2,
-            init: 250000,
-            iter: 250
+            init: {
+                title: "Location Purchase",
+                amount: 250000,
+            },
+            iter: {
+                title: "Location Costs",
+                amount: 250,
+            }
         },
         {
             id: 3,
-            init: 750000,
-            iter: 750
-        },
+            init: {
+                title: "Location Purchase",
+                amount: 750000,
+            },
+            iter: {
+                title: "Location Costs",
+                amount: 750,
+            }
+        }
     ]
 };

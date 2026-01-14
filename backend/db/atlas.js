@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
 try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
-    console.log("Successfully connected to Atlas MongoDB.");
+    console.log("Atlas MongoDB connected.");
 } catch(err) {
     console.error(err);
 }

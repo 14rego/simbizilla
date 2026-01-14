@@ -48,7 +48,7 @@ const Dashboard = (): JSX.Element => {
 
             {user.organizations?.filter((o: Organization) => o.deletedAt == null).map((o: Organization) => {
                 const org = o._id == game._id ? game : o;
-                const age = dayjs(org.gameStart).diff(org.gameCurrent, djsIncrement);
+                const age = dayjs(org.gameCurrent).diff(org.gameStart, djsIncrement);
                 return (
                     <table className="table table-auto rounded-md overflow-hidden my-4 dark:text-white" key={org._id}>
                         <tbody className="divide-y-1 divide-gray-400">

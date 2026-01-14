@@ -91,8 +91,8 @@ const FacilityCreate = (): JSX.Element => {
                     {support.locations.map((l: Location) => {
                         const isSelected = l._id == form.payload.location;
                         const costs = support.costMap.find(m => m.id == l.level);
-                        const costInit = costs?.init || 0;
-                        const costIter = costs?.iter || 0; 
+                        const costInit = costs?.init.amount || 0;
+                        const costIter = costs?.iter.amount || 0; 
                         return (<label key={l._id} className="form-radio" aria-selected={isSelected}>
                             <input type="radio" name="location" required value={l._id} checked={isSelected}
                             disabled={costInit > game.balance}

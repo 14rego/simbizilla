@@ -1,16 +1,18 @@
 import { useEffect, type JSX } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
 import { unsetUser } from "../../store/slices/user";
+import { useNavigate } from "react-router-dom";
 
 const SignOut = (): JSX.Element => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(unsetUser());
-    }, [dispatch]);
+        navigate("/sign/in");
+    }, [dispatch, navigate]);
 
-    return (<Navigate to="/sign/in" />);
+    return (<></>);
 };
 
 export default SignOut;

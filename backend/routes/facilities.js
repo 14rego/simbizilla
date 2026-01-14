@@ -1,13 +1,14 @@
 import express from "express";
 import mongooseConn from "../db/mongoose.js";
 import dayjs from "dayjs";
-import { djsFormat } from "../helpers/dates.js";
+import { djsFormat, djsIncrement } from "../helpers/dates.js";
 import { Category } from "../models/category.js";
 import { Location } from "../models/location.js";
 import sanitize from "mongo-sanitize";
 import { Facility, initFacility } from "../models/facility.js";
 import { apiData, gameObject } from "../helpers/responses.js";
 import { costMap } from "../helpers/money.js";
+import { Checkbook, initCheckbook } from "../models/checkbook.js";
 
 const router = express.Router();
 
@@ -35,20 +36,33 @@ pl.title: string
 router.post("/create", async (req, res) => {
     mongooseConn().then(async () => {
         const org = await gameObject(sanitize(req.body.game));
-        const category = await Category.findById(sanitize(req.body.payload.category));
+        const categories = await Category.find({});
+        const facilityCat = await Category.findById(sanitize(req.body.payload.category));
         const location = await Location.findById(sanitize(req.body.payload.location));
-        let cost = costMap.locations.find(m => m.id == location.level).init;
-        if (org.balance >= cost) {
+        const initiation = costMap.locations.find(m => m.id == location.level).init;
+        if (org.balance >= initiation.amount) {
             const newFacility = await Facility.create({
                 ...initFacility,
                 organizationId: org._id,
-                categoryId: category._id,
+                categoryId: facilityCat._id,
                 locationId: location._id,
                 title: sanitize(req.body.payload.title),
                 gameStart: dayjs(org.gameCurrent).format(djsFormat),
             });
             org.facilities.push(newFacility);
-            org.balance -= cost;
+            const checkbookCat = categories.find(c => c.title == initiation.title);
+            const newCbk = await Checkbook.create({
+                ...initCheckbook,
+                on: org._id,
+                onModel: "Organization",
+                categoryId: checkbookCat._id,
+                title: `${checkbookCat.title}: ${newFacility.title}`,
+                units: djsIncrement,
+                value: -initiation.amount,
+                gameStart: org.gameCurrent
+            });
+            org.checkbooks.push(newCbk);
+            org.balance -= initiation.amount;
             await org.save();
             apiData(res, org);
         } else {

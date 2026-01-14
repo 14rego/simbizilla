@@ -106,9 +106,19 @@ main {
             background: var(--color-purple-800);
             color: var(--color-purple-100);
         }
+
+        &:hover, 
+        &:focus-visible {
+            background: var(--color-purple-200);
+        
+            @media (prefers-color-scheme: dark) {
+                background: var(--color-purple-700);
+            }
+        }
     }
 
     .secondary {
+        border-width: 2px;
         border-color: var(--color-gray-600);
         background: var(--color-gray-100);
         color: var(--color-purple-700);
@@ -117,6 +127,34 @@ main {
             border-color: var(--color-gray-300);
             background: var(--color-gray-800);
             color: var(--color-purple-200);
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: var(--color-gray-200);
+        
+            @media (prefers-color-scheme: dark) {
+                background: var(--color-gray-700);
+            }
+        }
+    }
+
+    .table {
+        width: 100%;
+        border: 1px solid var(--color-gray-500);
+
+        thead tr {
+            background: var(--color-gray-200);
+                
+            @media (prefers-color-scheme: dark) {
+                background: var(--color-gray-700);
+            }
+        }
+        th {
+            padding: calc(var(--spacing) * 0.25) calc(var(--spacing) * 1.5);
+        }
+        td {
+            padding: calc(var(--spacing) * 0.33) calc(var(--spacing) * 1.5);
         }
     }
 }

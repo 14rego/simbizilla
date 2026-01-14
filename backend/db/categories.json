@@ -134,5 +134,21 @@
   "title": "Transportation",
   "type": "Facility",
   "description": "Involves logistics, air travel, and ground transport."
+},
+{
+  "_id": {
+    "$oid": "6966eec1c7c83a1e69e46a56"
+  },
+  "title": "Location Purchase",
+  "description": "Purchased a new location.",
+  "type": "Checkbook"
+},
+{
+  "_id": {
+    "$oid": "6966ef79c7c83a1e69e46a57"
+  },
+  "title": "Location Costs",
+  "description": "Costs for renting the location.",
+  "type": "Checkbook"
 }
 ]
